@@ -1,8 +1,6 @@
 package main
 
 import (
-	// "log"
-
 	"log"
 
 	"github.com/williamyeh0/FridgeFind/internal/server"
