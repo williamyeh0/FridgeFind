@@ -1,14 +1,16 @@
 package main
 
 import (
+	// "log"
+
 	"log"
 
 	"github.com/williamyeh0/FridgeFind/internal/server"
 )
 
 func main() {
-	// Wrapping our server with the *net/http.Server in NewHTTPServer saved us from writing a bunch of code 
+	// Wrapping our server with the *net/http.Server in NewHTTPServer saved us from writing a bunch of code
 	// here—and anywhere else we’d create an HTTP server.
-	srv  := server.NewHTTPServer(":8080") //pass in address to listen on
+	srv := server.NewHTTPServer(":8080") //pass in address to listen on
 	log.Fatal(srv.ListenAndServe())
 }
