@@ -2,7 +2,8 @@ package main
 
 import (
 	"log"
-	"github.com/williamyeh0/FridgeFind/server"
+
+	"github.com/williamyeh0/FridgeFind/internal/server"
 )
 
 func main() {
