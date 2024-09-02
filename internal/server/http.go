@@ -1,13 +1,14 @@
 package server
 
-import {
+import (
 	"encoding/json"
 	"net/http"
+
 	"github.com/gorilla/mux"
-}
+)
 
 func NewHTTPServer(addr string) *http.Server {
-	// take in address, returns server 
+	// take in address, returns server
 	// wrap with http.Server so user just calls ListenAndServe
 	httpsrv := newHTTPServer()
 	r := mux.NewRouter()
@@ -15,7 +16,7 @@ func NewHTTPServer(addr string) *http.Server {
 	r.HandleFunc("/", httpsrv.handleProduce).Methods("POST")
 	r.HandleFunc("/", httpsrv.handleConsume).Methods("GET")
 	return &http.Server{
-		Addr: addr,
+		Addr:    addr,
 		Handler: r,
 	}
 }
@@ -26,17 +27,17 @@ type httpServer struct {
 
 func newHTTPServer() *httpServer {
 	return &httpServer{
-		Log:NewLog(),
+		Log: NewLog(),
 	}
 }
 
 type ProduceRequest struct {
 	// caller wants to append to log
-	Record record `json:"record"`
+	Record Record `json:"record"`
 }
 
-type ProductResponse struct {
-	// server tells caller what offset the record was stored at 
+type ProduceResponse struct {
+	// server tells caller what offset the record was stored at
 	Offset uint64 `json:"offset"`
 }
 type ConsumeRequest struct {
@@ -46,10 +47,10 @@ type ConsumeRequest struct {
 
 type ConsumeResponse struct {
 	// server returns record
-	Record record `json:"record"`
+	Record Record `json:"record"`
 }
 
-func (s * httpServer) handleProduce(w http.ResponseWriter, r *http.Request) {
+func (s *httpServer) handleProduce(w http.ResponseWriter, r *http.Request) {
 	// handle Produce:
 	// 1. try decoding request.json
 	// 2. try main logic (append record)
@@ -67,14 +68,14 @@ func (s * httpServer) handleProduce(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	res := ProduceResponse{Offset: off}
-	err := json.NewEncoder(w).Encode(res)
+	err = json.NewEncoder(w).Encode(res)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 }
 
-func (s * httpServer) handleConsume(w http.ResponseWriter, r *http.Request) {
+func (s *httpServer) handleConsume(w http.ResponseWriter, r *http.Request) {
 	// handle Consume:
 	// 1. try decoding request.json
 	// 2. try main logic (read record)
@@ -96,7 +97,7 @@ func (s * httpServer) handleConsume(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	res := ConsumeResponse{Record: record}
-	err := json.NewEncoder(w).Encode(res)
+	err = json.NewEncoder(w).Encode(res)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return

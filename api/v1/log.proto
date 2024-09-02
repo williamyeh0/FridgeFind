@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package log.v1;
+
+option go_package = "github.com/williamyeh0/FridgeFind/api/log_v1";
+
+message Record {
+    // similar to Go struct, fieldId
+    bytes value = 1;
+    uint64 offset = 2;
+}
